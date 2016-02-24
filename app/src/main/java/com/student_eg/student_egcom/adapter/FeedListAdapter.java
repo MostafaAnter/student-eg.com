@@ -66,7 +66,7 @@ public class FeedListAdapter extends BaseAdapter {
 				.findViewById(R.id.timestamp);
 		TextView statusMsg = (TextView) convertView
 				.findViewById(R.id.txtStatusMsg);
-		TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
+
 		NetworkImageView profilePic = (NetworkImageView) convertView
 				.findViewById(R.id.profilePic);
 		FeedImageView feedImageView = (FeedImageView) convertView
@@ -76,11 +76,7 @@ public class FeedListAdapter extends BaseAdapter {
 
 		name.setText(item.getName());
 
-		// Converting timestamp into x ago format
-		CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
-				Long.parseLong(item.getTimeStamp()),
-				System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-		timestamp.setText(timeAgo);
+		timestamp.setText(item.getTimeStamp());
 
 		// Chcek for empty status message
 		if (!TextUtils.isEmpty(item.getStatus())) {
@@ -91,18 +87,7 @@ public class FeedListAdapter extends BaseAdapter {
 			statusMsg.setVisibility(View.GONE);
 		}
 
-		// Checking for null feed url
-		if (item.getUrl() != null) {
-			url.setText(Html.fromHtml("<a href=\"" + item.getUrl() + "\">"
-					+ item.getUrl() + "</a> "));
 
-			// Making url clickable
-			url.setMovementMethod(LinkMovementMethod.getInstance());
-			url.setVisibility(View.VISIBLE);
-		} else {
-			// url is null, remove from the view
-			url.setVisibility(View.GONE);
-		}
 
 		// user profile pic
 		profilePic.setImageUrl(item.getProfilePic(), imageLoader);
@@ -110,7 +95,7 @@ public class FeedListAdapter extends BaseAdapter {
 		// Feed image
 		if (item.getImge() != null) {
 			feedImageView.setImageUrl(item.getImge(), imageLoader);
-			feedImageView.setVisibility(View.VISIBLE);
+			//feedImageView.setVisibility(View.VISIBLE);
 			feedImageView
 					.setResponseObserver(new FeedImageView.ResponseObserver() {
 						@Override
@@ -122,7 +107,7 @@ public class FeedListAdapter extends BaseAdapter {
 						}
 					});
 		} else {
-			feedImageView.setVisibility(View.GONE);
+			//feedImageView.setVisibility(View.GONE);
 		}
 
 		return convertView;

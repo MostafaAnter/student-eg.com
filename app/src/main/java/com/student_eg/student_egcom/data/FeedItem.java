@@ -2,13 +2,13 @@ package com.student_eg.student_egcom.data;
 
 public class FeedItem {
 	private int id;
-	private String name, status, image, profilePic, timeStamp, url;
+	private String name, status, image, profilePic, timeStamp;
 
 	public FeedItem() {
 	}
 
 	public FeedItem(int id, String name, String image, String status,
-			String profilePic, String timeStamp, String url) {
+			String profilePic, String timeStamp) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -16,7 +16,7 @@ public class FeedItem {
 		this.status = status;
 		this.profilePic = profilePic;
 		this.timeStamp = timeStamp;
-		this.url = url;
+
 	}
 
 	public int getId() {
@@ -67,11 +67,5 @@ public class FeedItem {
 		this.timeStamp = timeStamp;
 	}
 
-	public String getUrl() {
-		return url;
-	}
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
 }

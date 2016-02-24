@@ -2,6 +2,7 @@ package com.student_eg.student_egcom;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
-    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
+    private String URL_FEED = "http://credit.student-eg.com/api/timeline";
 
     //student data
     private String url = "http://credit.student-eg.com/api/basic";
@@ -111,37 +113,53 @@ public class MainActivity extends AppCompatActivity
             // fetch the data from cache
             try {
                 String data = new String(entry.data, "UTF-8");
-                try {
-                    parseJsonFeed(new JSONObject(data));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                parseJsonFeed(data);
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
         } else {
-            // making fresh volley request and getting json
-            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET,
-                    URL_FEED, null, new Response.Listener<JSONObject>() {
+            // Restore preferences to get user id
+            final SharedPreferences settings = getSharedPreferences(Constants.STUDENT_EG_PREF, 0);
+            // Tag used to cancel the request
+            String tag_string_req = "string_req";
+
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    URL_FEED, new Response.Listener<String>() {
 
                 @Override
-                public void onResponse(JSONObject response) {
-                    VolleyLog.d(TAG, "Response: " + response.toString());
-                    if (response != null) {
-                        parseJsonFeed(response);
-                    }
+                public void onResponse(String response) {
+                    //to decode unicode
+                    response = StringEscapeUtils.unescapeJava(response);
+                    parseJsonFeed(response);
+
+
+
                 }
             }, new Response.ErrorListener() {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.d(TAG, "Error: " + error.getMessage());
-                }
-            });
 
-            // Adding request to volley request queue
-            AppController.getInstance().addToRequestQueue(jsonReq);
+                }
+            }) {
+
+
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("userId", String.valueOf(settings.getLong(Constants.USER_ID, -1)));
+                    params.put("token", Constants.APP_TOKEN);
+
+                    return params;
+
+                }
+            };
+
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
 
         // load user data
@@ -187,7 +205,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("userId", "74");//String.valueOf(settings.getLong(Constants.USER_ID, -1))
+                    params.put("userId", String.valueOf(settings.getLong(Constants.USER_ID, -1)));
                     params.put("token", Constants.APP_TOKEN);
                     return params;
                 }
@@ -302,30 +320,24 @@ public class MainActivity extends AppCompatActivity
     /**
      * Parsing json reponse and passing the data to feed view list adapter
      * */
-    private void parseJsonFeed(JSONObject response) {
+    private void parseJsonFeed(String response) {
         try {
-            JSONArray feedArray = response.getJSONArray("feed");
+            JSONArray feedArray = new JSONArray(response);
 
             for (int i = 0; i < feedArray.length(); i++) {
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
 
                 FeedItem item = new FeedItem();
                 item.setId(feedObj.getInt("id"));
-                item.setName(feedObj.getString("name"));
+                item.setName(feedObj.getString("full_name"));
 
                 // Image might be null sometimes
-                String image = feedObj.isNull("image") ? null : feedObj
-                        .getString("image");
-                item.setImge(image);
-                item.setStatus(feedObj.getString("status"));
-                item.setProfilePic(feedObj.getString("profilePic"));
-                item.setTimeStamp(feedObj.getString("timeStamp"));
-
-                // url might be null sometimes
-                String feedUrl = feedObj.isNull("url") ? null : feedObj
-                        .getString("url");
-                item.setUrl(feedUrl);
-
+                String image = feedObj.isNull("img") ? null : feedObj
+                        .getString("img");
+                item.setImge("http://credit.student-eg.com/" + image);
+                item.setStatus(feedObj.getString("content"));
+                item.setProfilePic("http://credit.student-eg.com/" + feedObj.getString("pic"));
+                item.setTimeStamp(feedObj.getString("created_at"));
                 feedItems.add(item);
             }
 
