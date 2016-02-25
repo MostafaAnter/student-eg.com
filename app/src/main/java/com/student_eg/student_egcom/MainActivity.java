@@ -1,6 +1,7 @@
 package com.student_eg.student_egcom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity
             };
 
             // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            AppController.getInstance().addToRequestQueue(strReq);
         }
 
         // load user data
@@ -310,6 +311,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_table) {
             // Handle the table
+            startActivity(new Intent(MainActivity.this, TableActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
