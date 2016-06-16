@@ -227,22 +227,32 @@ public class LoginActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        int id = Integer.parseInt(jsonRootObject.optString("id").toString());
+        int id = 0;
+        try {
+            id = Integer.parseInt(jsonRootObject.optString("id").toString());
+            // store user id
+            SharedPreferences settings = getSharedPreferences(Constants.STUDENT_EG_PREF, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putLong(Constants.USER_ID, id);
 
-        //debug
-        Log.d("user_id", "" + id);
+            // Commit the edits!
+            editor.commit();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        String error = jsonRootObject.optString("error");
 
-        // store user id
-        SharedPreferences settings = getSharedPreferences(Constants.STUDENT_EG_PREF, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putLong(Constants.USER_ID, id);
-
-        // Commit the edits!
-        editor.commit();
-
-        // go to main activity
-        startActivity(new Intent(LoginActivity.this, MainActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        if (error.equalsIgnoreCase("false")) {
+            // go to main activity
+            startActivity(new Intent(LoginActivity.this, MainActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        }else{
+            // show error message
+            new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("Oops...")
+                    .setContentText("email or password is wrong !")
+                    .show();
+        }
     }
 
 }

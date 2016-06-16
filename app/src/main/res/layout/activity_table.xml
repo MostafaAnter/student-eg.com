@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context="com.student_eg.student_egcom.TableActivity">
     <TextView
-        android:padding="10dp"
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/error_stroke_color"
-        style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-        android:text="الجدول الدراسي"/>
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:text="جدول الدراسة"/>
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"

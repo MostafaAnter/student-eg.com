@@ -3,31 +3,30 @@ package com.student_eg.student_egcom.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.student_eg.student_egcom.FeedImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.student_eg.student_egcom.R;
-import com.student_eg.student_egcom.app.AppController;
 import com.student_eg.student_egcom.data.FeedItem;
 
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class FeedListAdapter extends BaseAdapter {	
 	private Activity activity;
 	private LayoutInflater inflater;
 	private List<FeedItem> feedItems;
-	ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
 	public FeedListAdapter(Activity activity, List<FeedItem> feedItems) {
 		this.activity = activity;
@@ -50,6 +49,8 @@ public class FeedListAdapter extends BaseAdapter {
 	}
 
 	@Override
+
+
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		if (inflater == null)
@@ -58,8 +59,6 @@ public class FeedListAdapter extends BaseAdapter {
 		if (convertView == null)
 			convertView = inflater.inflate(R.layout.feed_item, null);
 
-		if (imageLoader == null)
-			imageLoader = AppController.getInstance().getImageLoader();
 
 		TextView name = (TextView) convertView.findViewById(R.id.name);
 		TextView timestamp = (TextView) convertView
@@ -67,16 +66,16 @@ public class FeedListAdapter extends BaseAdapter {
 		TextView statusMsg = (TextView) convertView
 				.findViewById(R.id.txtStatusMsg);
 
-		NetworkImageView profilePic = (NetworkImageView) convertView
+		ImageView profilePic = (ImageView) convertView
 				.findViewById(R.id.profilePic);
-		FeedImageView feedImageView = (FeedImageView) convertView
+		ImageView feedImageView = (ImageView) convertView
 				.findViewById(R.id.feedImage1);
 
 		FeedItem item = feedItems.get(position);
 
 		name.setText(item.getName());
 
-		timestamp.setText(item.getTimeStamp());
+		timestamp.setText(manipulateDateFormat(item.getTimeStamp()));
 
 		// Chcek for empty status message
 		if (!TextUtils.isEmpty(item.getStatus())) {
@@ -90,27 +89,46 @@ public class FeedListAdapter extends BaseAdapter {
 
 
 		// user profile pic
-		profilePic.setImageUrl(item.getProfilePic(), imageLoader);
+		Glide.with(activity)
+				.load(item.getProfilePic())
+				.thumbnail(0.5f)
+				.crossFade()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.into(profilePic);
 
-		// Feed image
-		if (item.getImge() != null) {
-			feedImageView.setImageUrl(item.getImge(), imageLoader);
-			//feedImageView.setVisibility(View.VISIBLE);
-			feedImageView
-					.setResponseObserver(new FeedImageView.ResponseObserver() {
-						@Override
-						public void onError() {
-						}
-
-						@Override
-						public void onSuccess() {
-						}
-					});
-		} else {
-			//feedImageView.setVisibility(View.GONE);
-		}
+		// feed image view
+		if (item.getImge() != null)
+			feedImageView.setVisibility(View.VISIBLE);
+		Glide.with(activity)
+				.load(item.getImge())
+				.thumbnail(0.5f)
+				.crossFade()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.into(feedImageView);
 
 		return convertView;
+	}
+
+
+	public static String manipulateDateFormat(String post_date){
+
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = (Date)formatter.parse(post_date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		if (date != null) {
+			// Converting timestamp into x ago format
+			CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
+					Long.parseLong(String.valueOf(date.getTime())),
+					System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+			return timeAgo + "";
+		}else {
+			return post_date;
+		}
 	}
 
 }
