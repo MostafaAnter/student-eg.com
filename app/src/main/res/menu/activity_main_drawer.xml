@@ -6,6 +6,21 @@
             android:id="@+id/action_table"
             android:icon="@drawable/ic_assignment_24dp"
             android:title="الجدول الدراسي" />
+        <item
+            android:id="@+id/action_material"
+            android:icon="@drawable/ic_chrome_reader_mode_black_24dp"
+            android:title="متريل المناهج الدراسية" />
+
+        <item
+            android:id="@+id/action_ask"
+            android:icon="@drawable/ic_help_outline_black_24dp"
+            android:title="اسال سؤال؟" />
+
+        <item
+            android:id="@+id/action_blogger"
+            android:icon="@drawable/ic_camera_black_24dp"
+            android:title="خدمة بلوجر" />
+
 
     </group>
 

@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity
             Picasso.with(MainActivity.this)
                     .load(avatar)
                     .resize(100, 100)
+                    .placeholder(R.drawable.profile)
                     .centerCrop()
                     .into(user_avatar);
         }
@@ -312,6 +313,15 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_table) {
             // Handle the table
             startActivity(new Intent(MainActivity.this, TableActivity.class));
+        }else if(id == R.id.action_material){
+            startActivity(new Intent(MainActivity.this, MatrialActivity.class));
+
+        }else if(id == R.id.action_ask){
+            startActivity(new Intent(MainActivity.this, AskActivity.class));
+
+        }else if(id == R.id.action_blogger){
+            startActivity(new Intent(MainActivity.this, BloggerActivity.class));
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

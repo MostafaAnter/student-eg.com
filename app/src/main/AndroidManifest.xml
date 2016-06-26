@@ -34,7 +34,10 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TableActivity"/>
+        <activity android:name=".TableActivity" />
+        <activity android:name=".MatrialActivity" />
+        <activity android:name=".AskActivity" />
+        <activity android:name=".BloggerActivity"></activity>
     </application>
 
 </manifest>
