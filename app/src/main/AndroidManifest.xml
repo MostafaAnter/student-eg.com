@@ -37,7 +37,15 @@
         <activity android:name=".TableActivity" />
         <activity android:name=".MatrialActivity" />
         <activity android:name=".AskActivity" />
-        <activity android:name=".BloggerActivity"></activity>
+        <activity android:name=".BloggerActivity" />
+        <activity
+            android:name=".news.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".news.DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

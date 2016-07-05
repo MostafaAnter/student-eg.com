@@ -12,4 +12,9 @@ public class Constants {
     public static final String USER_AVATAR = "avatar";
     public static final String USER_GPA = "gpa";
 
+
+    public static final String TOKEN = "9pAYRx2PCQbg0hT98QaxBI69iVww6h";
+    public static final String NEWS_API = "http://fci.student-eg.com/api/news";
+    public static final String IMAGE_MAIN_URL = "http://fci.student-eg.com/";
+
 }

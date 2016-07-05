@@ -36,6 +36,7 @@ import com.student_eg.student_egcom.adapter.FeedListAdapter;
 import com.student_eg.student_egcom.app.AppController;
 import com.student_eg.student_egcom.arabic.ArabicUtilities;
 import com.student_eg.student_egcom.data.FeedItem;
+import com.student_eg.student_egcom.news.Main2Activity;
 import com.student_eg.student_egcom.utils.Constants;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -321,6 +322,9 @@ public class MainActivity extends AppCompatActivity
 
         }else if(id == R.id.action_blogger){
             startActivity(new Intent(MainActivity.this, BloggerActivity.class));
+
+        }else if(id == R.id.news){
+            startActivity(new Intent(MainActivity.this, Main2Activity.class));
 
         }
 

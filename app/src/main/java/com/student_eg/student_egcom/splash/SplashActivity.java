@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.student_eg.student_egcom.MainActivity;
 import com.student_eg.student_egcom.R;
 import com.student_eg.student_egcom.login.LoginActivity;
+import com.student_eg.student_egcom.news.Main2Activity;
 import com.student_eg.student_egcom.utils.Constants;
 
 
@@ -38,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
                 SharedPreferences settings = getSharedPreferences(Constants.STUDENT_EG_PREF, 0);
                 long user_id = settings.getLong(Constants.USER_ID, -1);
                 if(user_id == -1){
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class)
+                            startActivity(new Intent(SplashActivity.this, Main2Activity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
                 }else {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class)

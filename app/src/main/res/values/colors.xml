@@ -15,4 +15,10 @@
     <color name="feed_item_border">#c2c3c8</color>
     <color name="link">#0a80d1</color>
     <color name="timestamp">#a0a3a7</color>
+
+    <!-- swipe colors -->
+    <color name="swipe_color_1">#bf3026</color>
+    <color name="swipe_color_2">#99CC00</color>
+    <color name="swipe_color_3">#0a80d1</color>
+    <color name="swipe_color_4">#7CAF00</color>
 </resources>
