@@ -1,5 +1,7 @@
 package com.student_eg.student_egcom.fragments;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +25,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.student_eg.student_egcom.JsonParser;
+import com.student_eg.student_egcom.MainActivity;
 import com.student_eg.student_egcom.R;
 import com.student_eg.student_egcom.adapter.MyAdapter;
 import com.student_eg.student_egcom.app.AppController;
+import com.student_eg.student_egcom.login.LoginActivity;
 import com.student_eg.student_egcom.models.FavoriteModel;
 import com.student_eg.student_egcom.models.FeedPOJO;
+import com.student_eg.student_egcom.news.Main2Activity;
 import com.student_eg.student_egcom.utils.Constants;
 
 import java.io.UnsupportedEncodingException;
@@ -77,6 +83,38 @@ public class ItemsFragment extends Fragment {
         mDataset = new ArrayList<>();
         // toggle for change layout manager
         isGridtView = false;
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_items, menu);
+        this.menu = menu;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_change_layoutManager:
+                // swap between two options
+                toggle();
+                return true;
+            case R.id.login_action:
+                SharedPreferences settings = getActivity().getSharedPreferences(Constants.STUDENT_EG_PREF, 0);
+                long user_id = settings.getLong(Constants.USER_ID, -1);
+                if(user_id == -1){
+                    startActivity(new Intent(getActivity(), LoginActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
+                }else {
+                    startActivity(new Intent(getActivity(), MainActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
