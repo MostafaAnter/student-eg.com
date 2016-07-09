@@ -326,6 +326,9 @@ public class MainActivity extends AppCompatActivity
         }else if(id == R.id.news){
             startActivity(new Intent(MainActivity.this, Main2Activity.class));
 
+        }else if(id == R.id.map){
+            startActivity(new Intent(MainActivity.this, com.student_eg.student_egcom.Map.class));
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

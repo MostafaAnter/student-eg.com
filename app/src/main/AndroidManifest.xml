@@ -45,7 +45,16 @@
         <activity
             android:name=".news.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Map"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.student_eg.student_egcom.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

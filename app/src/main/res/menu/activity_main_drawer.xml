@@ -27,6 +27,11 @@
             android:icon="@drawable/ic_camera_black_24dp"
             android:title="خدمة بلوجر" />
 
+        <item
+            android:id="@+id/map"
+            android:icon="@drawable/ic_pin_drop_black_24dp"
+            android:title="خدمة الخريطة" />
+
 
     </group>
 
